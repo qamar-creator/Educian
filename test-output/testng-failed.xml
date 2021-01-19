@@ -6,8 +6,7 @@
       <class name="DashBoard.DasboardItems">
         <methods>
           <include name="loginNsetup"/>
-          <include name="paginationStudentList"/>
-          <include name="createstudent"/>
+          <include name="searchStudent"/>
         </methods>
       </class> <!-- DashBoard.DasboardItems -->
     </classes>

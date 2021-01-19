@@ -16,30 +16,35 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import Data.Xls_Reader;
+
 import org.openqa.selenium.support.ui.Select;
 import io.testproject.sdk.DriverBuilder;
 import io.testproject.sdk.drivers.web.ChromeDriver;
 
 public class DasboardItems {
 
-	 static boolean f;
+	 static boolean h;
 	static int attempts ;
 	WebElement uploadElement;
      String  actualResult;
 	String expectedResult;
-	ChromeDriver driver;
+	org.openqa.selenium.chrome.ChromeDriver driver;
 	
 @BeforeTest
 	
 public void loginNsetup() throws MalformedURLException, InterruptedException 
 	{
+	Xls_Reader reader=new  Xls_Reader("./Educian/src/main/java/Data/login.xls");
+	
+ 
+	String username=reader.getCellData("login", 0, 2);
+	 System.out.println(username);
 		expectedResult="Dashboard";
 
-		driver = new DriverBuilder<ChromeDriver>(new ChromeOptions())
-				.withRemoteAddress(new URL("http://localhost:8585"))
-				.withToken("WHZ_iC8PTUJQ8eR4Btq5tDVK-jdmdAsvvMHLXggKiwg1")	
-				.build(ChromeDriver.class);
-		
+		System.setProperty("webdriver.chrome.driver","C:\\Users\\MinzaMushtaq3\\Downloads\\chromedriver.exe");
+		 driver =  new org.openqa.selenium.chrome.ChromeDriver();
 
 
 		driver.navigate().to("https://test.educian.com/");
@@ -142,7 +147,7 @@ public void createstudent() throws InterruptedException, IOException
 	driver.findElement(By.xpath("//button[normalize-space()='Submit']")).click();//submit
 	try
 	{
-	  f=driver.findElement(By.xpath("//span[@id='examinationTypeHelper']")).isDisplayed();
+	  h=driver.findElement(By.xpath("//span[@id='examinationTypeHelper']")).isDisplayed();
 	
  	
 	}
@@ -152,7 +157,7 @@ public void createstudent() throws InterruptedException, IOException
 	}
 
 finally {
-	Assert.assertTrue(f);
+	Assert.assertTrue(h);
 }
 }
 @Test(priority=3)
