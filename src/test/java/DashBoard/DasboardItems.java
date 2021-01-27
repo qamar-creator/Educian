@@ -1,9 +1,16 @@
 package DashBoard;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import dataReaders.JsonReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -15,9 +22,9 @@ import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import Data.Xls_Reader;
 
 import org.openqa.selenium.support.ui.Select;
 import io.testproject.sdk.DriverBuilder;
@@ -32,15 +39,14 @@ public class DasboardItems {
 	String expectedResult;
 	org.openqa.selenium.chrome.ChromeDriver driver;
 	
-@BeforeTest
+@Test(dataProvider="login data")
 	
-public void loginNsetup() throws MalformedURLException, InterruptedException 
+public void loginNsetup(String data)  throws MalformedURLException, InterruptedException 
 	{
-	Xls_Reader reader=new  Xls_Reader("./Educian/src/main/java/Data/login.xls");
 	
+	
+	String users[]= data.split(",");
  
-	String username=reader.getCellData("login", 0, 2);
-	 System.out.println(username);
 		expectedResult="Dashboard";
 
 		System.setProperty("webdriver.chrome.driver","C:\\Users\\MinzaMushtaq3\\Downloads\\chromedriver.exe");
@@ -48,9 +54,11 @@ public void loginNsetup() throws MalformedURLException, InterruptedException
 
 
 		driver.navigate().to("https://test.educian.com/");
+		
+		 
 
-		driver.findElement(By.cssSelector("#inputEmail")).sendKeys("qaeducian@gmail.com");
-		driver.findElement(By.cssSelector("#inputPassword")).sendKeys("qa@1234");
+		driver.findElement(By.cssSelector("#inputEmail")).sendKeys(users[0] );
+		driver.findElement(By.cssSelector("#inputPassword")).sendKeys(users[1] );
 
 		driver.findElement(By.xpath("//button[contains(text(),'Sign in')]")).click();
 		Thread.sleep(2000);
@@ -71,7 +79,45 @@ public void loginNsetup() throws MalformedURLException, InterruptedException
 		Assert.assertEquals(actualResult, expectedResult,"The login failed");
 
 	}
+
+
+
+@DataProvider(name="login data")
 	
+public String[] readdata() throws IOException, ParseException
+
+
+{
+	
+	JSONParser jsonparser= new JSONParser();
+	
+	FileReader reader= new FileReader(".\\JSON files\\Login.Json");
+	
+	Object object =jsonparser.parse(reader);
+	JSONObject loginJsonObbj=(JSONObject) object;
+	
+	JSONArray loginarray=(JSONArray) loginJsonObbj.get("login data");
+	
+	
+	String arr[]= new String[loginarray.size()];
+	
+	for(int i=0;i<loginarray.size();i++)
+	{
+		
+		JSONObject user=(JSONObject)loginarray.get(i);
+		
+	String username=(String)	user.get("username");
+		String password=(String) user.get("password");
+		
+		arr[i]=username+","+ password;
+	}
+	
+	return arr;
+}
+
+
+
+ 
  @Test(priority=1)
 public void searchStudent() throws InterruptedException
 {

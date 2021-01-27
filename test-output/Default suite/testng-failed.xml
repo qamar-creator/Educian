@@ -5,8 +5,7 @@
     <classes>
       <class name="DashBoard.DasboardItems">
         <methods>
-          <include name="loginNsetup"/>
-          <include name="searchStudent"/>
+          <include name="loginNsetup" invocation-numbers="0"/>
         </methods>
       </class> <!-- DashBoard.DasboardItems -->
     </classes>
