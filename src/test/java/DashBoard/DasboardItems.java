@@ -39,12 +39,12 @@ public class DasboardItems {
 	String expectedResult;
 	org.openqa.selenium.chrome.ChromeDriver driver;
 	
-@Test(dataProvider="login data")
+@Test(priority=2,dataProvider="login data")
 	
 public void loginNsetup(String data)  throws MalformedURLException, InterruptedException 
 	{
 	
-	
+	// commenting
 	String users[]= data.split(",");
  
 		expectedResult="Dashboard";
